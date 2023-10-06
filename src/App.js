@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Toaster } from "react-hot-toast";
+import Addproduct from "./pages/Addproduct";
+import Products from "./pages/Products";
 
-function App() {
+const App = () => {
+  const [showPopup, setShowPopup] = useState(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="min-h-full bg-gray-200">
+      <Toaster />
+      {showPopup && (
+        <Addproduct showPopup={showPopup} setShowPopup={setShowPopup} />
+      )}
+      <div className="bg-white w-full p-5 px-10 flex justify-between items-center">
+        <div className="font-extrabold flex text-indigo-400 text-3xl">Inv.</div>
+        <div
+          className="bg-indigo-400 cursor-pointer p-2 px-3 rounded font-semibold text-white"
+          onClick={() => setShowPopup(true)}
         >
-          Learn React
-        </a>
-      </header>
+          Add Product
+        </div>
+      </div>
+      <Products />
     </div>
   );
-}
+};
 
 export default App;
