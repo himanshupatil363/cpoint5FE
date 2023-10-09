@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { toast } from "react-hot-toast";
 import { baseUrl } from "../config";
@@ -14,6 +14,15 @@ const Addproduct = ({ setShowPopup }) => {
     category: "",
     image: null,
   });
+  const [category, setCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState();
+
+  useEffect(() => {
+    axios
+      .get(`${baseUrl}/products/category`)
+      .then((res) => setCategory(res.data))
+      .catch((err) => console.log(err));
+  }, []);
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prevData) => ({
@@ -78,8 +87,23 @@ const Addproduct = ({ setShowPopup }) => {
             </div>
             <div className="flex w-full gap-6 mt-2">
               <div className="w-full">
-                <label htmlFor="category">Category</label>{" "}
-                <input
+                <label htmlFor="category">Category</label>
+                {category.map((cat) => (
+                  <div>
+                    <label htmlFor={cat._id} name="category">
+                      {cat.name}
+                    </label>
+                    <input
+                      onChange={handleInputChange}
+                      type="radio"
+                      value={cat._id}
+                      name="category"
+                      id={cat.id}
+                    />
+                  </div>
+                ))}
+
+                {/* <input
                   className="border rounded px-2 py-1 w-full"
                   type="text"
                   name="category"
@@ -87,7 +111,7 @@ const Addproduct = ({ setShowPopup }) => {
                   id="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                />
+                /> */}
               </div>
               <div className="w-full">
                 <label htmlFor="price">Price</label>{" "}
